@@ -15,7 +15,7 @@ fn main() {
     res.set_icon("../../assets/app-icon/novafoods-launcher.ico")
         .set("ProductName", "Nova Foods Launcher")
         .set("FileDescription", "Nova Foods Launcher")
-        .set("CompanyName", "Learning Machines LLC")
+        .set("CompanyName", "Nova Foods")
         .set("LegalCopyright", "Copyright (c) the Nova Foods Launcher authors. MIT OR Apache-2.0.")
         .set("OriginalFilename", "novafoods-launcher.exe")
         .set("InternalName", "novafoods-launcher");

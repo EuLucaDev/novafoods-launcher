@@ -2774,7 +2774,7 @@ dependencies = [
 
 [[package]]
 name = "novafoods-launcher"
-version = "0.4.0"
+version = "0.4.1"
 dependencies = [
  "eframe",
  "egui",
@@ -2798,7 +2798,7 @@ dependencies = [
 
 [[package]]
 name = "novafoods-launcher-core"
-version = "0.4.0"
+version = "0.4.1"
 dependencies = [
  "semver",
  "serde",
@@ -2807,7 +2807,7 @@ dependencies = [
 
 [[package]]
 name = "novafoods-launcher-native"
-version = "0.4.0"
+version = "0.4.1"
 dependencies = [
  "dirs 6.0.0",
  "flate2",
@@ -2825,7 +2825,7 @@ dependencies = [
 
 [[package]]
 name = "novafoods-launcher-ui-egui"
-version = "0.4.0"
+version = "0.4.1"
 dependencies = [
  "egui",
  "egui_extras",
@@ -2841,7 +2841,7 @@ dependencies = [
 
 [[package]]
 name = "novafoods-launcher-web"
-version = "0.4.0"
+version = "0.4.1"
 dependencies = [
  "eframe",
  "egui",
@@ -5803,7 +5803,7 @@ checksum = "ec7a2a501ed189703dba8b08142f057e887dfc4b2cc4db2d343ac6376ba3e0b9"
 
 [[package]]
 name = "xtask"
-version = "0.4.0"
+version = "0.4.1"
 
 [[package]]
 name = "yoke"
