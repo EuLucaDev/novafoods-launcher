@@ -6,14 +6,14 @@
 use std::cell::{Cell, RefCell};
 use std::rc::Rc;
 
+use egui_kittest::Harness;
+use egui_kittest::kittest::Queryable;
 use novafoods_launcher_core::protocol::{Backend, Capabilities, Command, Event, JobPhase, LatestRelease, Origin, PausedDownload, Source};
 use novafoods_launcher_core::release::{Asset, Release};
 use novafoods_launcher_core::status::InstallSource;
 use novafoods_launcher_core::{Arch, Installed, Os, Platform, SUITE, version};
 use novafoods_launcher_ui_egui::settings::ViewMode;
 use novafoods_launcher_ui_egui::{Host, LauncherUi, Settings};
-use egui_kittest::Harness;
-use egui_kittest::kittest::Queryable;
 
 const NOW: i64 = 1_791_500_000;
 

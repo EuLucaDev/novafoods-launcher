@@ -28,13 +28,13 @@
      xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
   <Package
       Name="NovaFoodsLauncher"
-      Manufacturer="Learning Machines LLC"
+      Manufacturer="Nova Foods"
       Version="$(var.Version)"
-      UpgradeCode="1AC08DBF-D4CF-4BA4-A81E-CAA5C1004974"
+      UpgradeCode="E8050815-2715-5041-99DE-9C116DA6EFA6"
       Scope="perUser"
       Compressed="yes"
       Language="1033">
-    <SummaryInformation Description="NovaFoodsLauncher: install and update the Nova Foods Apps" Manufacturer="Learning Machines LLC" />
+    <SummaryInformation Description="NovaFoodsLauncher: install and update the Nova Foods Apps" Manufacturer="Nova Foods" />
     <!-- Same-version upgrades let successive pre-releases of one X.Y.Z replace each other
          (MSI versions are numeric, so 1.2.3-rc.1 and 1.2.3-rc.2 are both 1.2.3). -->
     <MajorUpgrade AllowSameVersionUpgrades="yes"
@@ -59,7 +59,7 @@
     <!-- An update installs where the user put the previous version (recorded by
          NovaFoodsLauncherApp below; every version since 0.1.0 records it). -->
     <Property Id="INSTALLFOLDER">
-      <RegistrySearch Id="PreviousInstallFolder" Root="HKCU" Key="Software\Learning Machines LLC\NovaFoodsLauncher" Name="InstallDir" Type="raw" />
+      <RegistrySearch Id="PreviousInstallFolder" Root="HKCU" Key="Software\Nova Foods\Nova Foods Launcher" Name="InstallDir" Type="raw" />
     </Property>
 
     <!-- The desktop shortcut: the folder page's box sets INSTALLDESKTOPSHORTCUT to 1. It starts
@@ -67,7 +67,7 @@
          from a version that never asked (0.1.0, 0.1.1) adds none. A value given on the command
          line (msiexec ... INSTALLDESKTOPSHORTCUT=0 or 1) wins. -->
     <Property Id="PREVIOUSDESKTOPSHORTCUT">
-      <RegistrySearch Id="PreviousDesktopShortcut" Root="HKCU" Key="Software\Learning Machines LLC\NovaFoodsLauncher" Name="DesktopShortcutChoice" Type="raw" />
+      <RegistrySearch Id="PreviousDesktopShortcut" Root="HKCU" Key="Software\Nova Foods\Nova Foods Launcher" Name="DesktopShortcutChoice" Type="raw" />
     </Property>
     <SetProperty Id="INSTALLDESKTOPSHORTCUT" Value="1" After="AppSearch" Sequence="first"
         Condition="NOT INSTALLDESKTOPSHORTCUT AND ((NOT Installed AND NOT WIX_UPGRADE_DETECTED AND NOT PREVIOUSDESKTOPSHORTCUT) OR PREVIOUSDESKTOPSHORTCUT = &quot;1&quot;)" />
@@ -142,29 +142,29 @@
 
   <Fragment>
     <ComponentGroup Id="NovaFoodsLauncherFiles">
-      <Component Id="NovaFoodsLauncherApp" Directory="INSTALLFOLDER" Guid="55DCC431-EBEF-4C11-BABB-6D78CE0ECF4E">
+      <Component Id="NovaFoodsLauncherApp" Directory="INSTALLFOLDER" Guid="EC04396E-8E27-5E11-BEFA-1F06274A2423">
         <File Id="NovaFoodsLauncherExe" Source="$(var.BinDir)\novafoods-launcher.exe" KeyPath="no" />
         <!-- Read back by the next version's installer and by the launcher (self_update.rs). -->
-        <RegistryValue Root="HKCU" Key="Software\Learning Machines LLC\NovaFoodsLauncher" Name="InstallDir" Value="[INSTALLFOLDER]" Type="string" KeyPath="yes" />
-        <RegistryValue Root="HKCU" Key="Software\Learning Machines LLC\NovaFoodsLauncher" Name="DesktopShortcutChoice" Value="[DESKTOPSHORTCUTCHOICE]" Type="string" />
+        <RegistryValue Root="HKCU" Key="Software\Nova Foods\Nova Foods Launcher" Name="InstallDir" Value="[INSTALLFOLDER]" Type="string" KeyPath="yes" />
+        <RegistryValue Root="HKCU" Key="Software\Nova Foods\Nova Foods Launcher" Name="DesktopShortcutChoice" Value="[DESKTOPSHORTCUTCHOICE]" Type="string" />
         <!-- Win+R "novafoods-launcher". -->
         <RegistryValue Root="HKCU" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\novafoods-launcher.exe" Value="[#NovaFoodsLauncherExe]" Type="string" />
         <RemoveFolder Id="RemoveInstallFolder" Directory="INSTALLFOLDER" On="uninstall" />
         <RemoveFolder Id="RemoveLocalProgramsFolder" Directory="LocalProgramsFolder" On="uninstall" />
       </Component>
 
-      <Component Id="NovaFoodsLauncherShortcut" Directory="ProgramMenuFolder" Guid="870F3DFA-BC0F-497F-85D5-A361B04826AF">
+      <Component Id="NovaFoodsLauncherShortcut" Directory="ProgramMenuFolder" Guid="B075A755-ED62-5F3E-90DC-824CEE548F90">
         <Shortcut Id="StartMenuShortcut" Name="NovaFoodsLauncher"
             Description="Install and update the Nova Foods Apps"
             Target="[#NovaFoodsLauncherExe]" WorkingDirectory="INSTALLFOLDER"
             Icon="NovaFoodsLauncherIcon.exe" IconIndex="0">
           <ShortcutProperty Key="System.AppUserModel.ID" Value="br.com.novafoods.novafoods-launcher" />
         </Shortcut>
-        <RegistryValue Root="HKCU" Key="Software\Learning Machines LLC\NovaFoodsLauncher" Name="StartMenuShortcut" Value="1" Type="integer" KeyPath="yes" />
+        <RegistryValue Root="HKCU" Key="Software\Nova Foods\Nova Foods Launcher" Name="StartMenuShortcut" Value="1" Type="integer" KeyPath="yes" />
       </Component>
 
       <!-- Only when the folder page's box is ticked; removed on uninstall like everything else. -->
-      <Component Id="NovaFoodsLauncherDesktopShortcut" Directory="DesktopFolder" Guid="CF06DCF3-BE5A-4A2B-B3BF-F553CC6E5D60"
+      <Component Id="NovaFoodsLauncherDesktopShortcut" Directory="DesktopFolder" Guid="FF6FB048-F917-55C0-B8BC-530E6C7C2C8A"
           Condition="INSTALLDESKTOPSHORTCUT = &quot;1&quot;">
         <Shortcut Id="DesktopShortcut" Name="NovaFoodsLauncher"
             Description="Install and update the Nova Foods Apps"
@@ -172,7 +172,10 @@
             Icon="NovaFoodsLauncherIcon.exe" IconIndex="0">
           <ShortcutProperty Key="System.AppUserModel.ID" Value="br.com.novafoods.novafoods-launcher" />
         </Shortcut>
-        <RegistryValue Root="HKCU" Key="Software\Learning Machines LLC\NovaFoodsLauncher" Name="DesktopShortcut" Value="1" Type="integer" KeyPath="yes" />
+        <RegistryValue Root="HKCU" Key="Software\Nova Foods\Nova Foods Launcher" Name="DesktopShortcut" Value="1" Type="integer" KeyPath="yes" />
+      </Component>
+      <Component Id="NovaFoodsLegalNotice">
+        <File Id="NovaFoodsLegalNoticeFile" Source="$(sys.SOURCEFILEDIR)..\..\NOTICE" KeyPath="yes" />
       </Component>
     </ComponentGroup>
   </Fragment>

@@ -561,7 +561,7 @@ fn restart_blocked(mut busy: Vec<&str>) -> String {
         _ => (busy.join(", "), "were", "them"),
     };
     format!(
-        "NovaFoodsLauncher didn't restart to update: {names} {were} still installing. Answer or close any password prompt, \
+        "Nova Foods Launcher didn't restart to update: {names} {were} still installing. Answer or close any password prompt, \
          let {them} finish or cancel {them}, then press Update and restart again."
     )
 }
@@ -727,7 +727,7 @@ fn fetch_feed(http: &Http, paths: &Paths, url: &str, throttle: &Mutex<FeedThrott
         let wait = throttle.lock().unwrap_or_else(PoisonError::into_inner).wait(crate::now());
         if wait > MAX_THROTTLE_WAIT {
             if !asked {
-                log::info!("holding off the NovaFoods API for {wait} s");
+                log::info!("holding off the Nova Foods API for {wait} s");
             }
             break;
         }
@@ -758,7 +758,7 @@ fn fetch_feed(http: &Http, paths: &Paths, url: &str, throttle: &Mutex<FeedThrott
                 }
             },
             Err(e) if e.throttled => {
-                log::warn!("the NovaFoods API asked us to slow down (HTTP 429); holding off");
+                log::warn!("the Nova Foods API asked us to slow down (HTTP 429); holding off");
                 Outcome::Throttled { retry_after: e.retry_after }
             }
             Err(e) => {

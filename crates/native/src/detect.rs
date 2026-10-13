@@ -1,7 +1,7 @@
 //! Finding Nova Foods Apps that are already installed, however they got there.
 //!
 //! - macOS: `<App>.app` in `/Applications` or `~/Applications`, read from its `Info.plist`.
-//! - Windows: the Windows Installer's uninstall entries (`Learning Machines LLC`), and portable
+//! - Windows: the Windows Installer's uninstall entries (`Nova Foods`), and portable
 //!   copies the launcher unpacked.
 //! - Linux: AppImages in `~/Applications` (where the launcher and AppImageLauncher put them),
 //!   `~/AppImages` (Gear Lever) and `~/.local/bin`, Debian/RPM packages, Flatpaks, and tarball
@@ -90,13 +90,13 @@ pub(crate) fn appimage_version(name: &str, stems: &[&str]) -> Option<Option<Stri
 
 /// Who our Windows Installer packages name as their publisher.
 #[cfg_attr(not(windows), allow(dead_code))]
-const PUBLISHER: &str = "Learning Machines LLC";
+const PUBLISHER: &str = "Nova Foods";
 
 /// Whether an uninstall entry's `DisplayName` and `Publisher` are `app`'s, under any name its
 /// installers have registered.
 #[cfg_attr(not(windows), allow(dead_code))]
 fn is_installer_entry(app: &CraftApp, display_name: &str, publisher: &str) -> bool {
-    publisher == PUBLISHER && app.names().any(|n| n == display_name)
+    publisher == PUBLISHER && app.names().any(|n| n == display_name || n.replace(' ', "").eq_ignore_ascii_case(display_name))
 }
 
 /// Where a Windows install of `app` may keep its exe, in the order to try: the entry's
@@ -145,10 +145,10 @@ pub mod macos {
 
     /// Where a `.app` might be: the system and the user's Applications folders.
     pub fn candidates(app: &CraftApp) -> Vec<PathBuf> {
-        let bundle = format!("{}.app", app.name);
-        let mut out = vec![Path::new("/Applications").join(&bundle)];
+        let bundles = [format!("{}.app", app.name), format!("{}.app", app.name.replace(' ', ""))];
+        let mut out: Vec<PathBuf> = bundles.iter().map(|bundle| Path::new("/Applications").join(bundle)).collect();
         if let Some(home) = dirs::home_dir() {
-            out.push(home.join("Applications").join(&bundle));
+            out.extend(bundles.iter().map(|bundle| home.join("Applications").join(bundle)));
         }
         out
     }
@@ -551,16 +551,16 @@ mod tests {
         );
     }
 
-    const LEARNING_MACHINES: &str = "Learning Machines LLC";
+    const LEARNING_MACHINES: &str = "Nova Foods";
 
     fn roots() -> Vec<PathBuf> {
         vec![PathBuf::from(r"C:\Program Files"), PathBuf::from(r"C:\Program Files (x86)")]
     }
 
     #[test]
-    fn novapdf_matches_its_former_printcraft_installer_name() {
+    fn novapdf_rejects_upstream_printcraft_installer_name() {
         let pdf = CraftApp::by_id("novapdf").unwrap();
-        assert!(is_installer_entry(pdf, "PrintCraft", LEARNING_MACHINES), "a PrintCraft entry from {LEARNING_MACHINES} should be Nova PDF's");
+        assert!(!is_installer_entry(pdf, "PrintCraft", LEARNING_MACHINES), "a PrintCraft entry from {LEARNING_MACHINES} should be Nova PDF's");
     }
 
     #[test]
@@ -584,12 +584,9 @@ mod tests {
         let pdf = CraftApp::by_id("novapdf").unwrap();
         let location = PathBuf::from(r"D:\Apps\PrintCraft");
         let roots = roots();
-        let mut want = vec![location.join("novapdf.exe"), location.join("printcraft.exe")];
+        let mut want = vec![location.join("novapdf.exe")];
         for root in &roots {
-            for dir in ["Nova PDF", "PrintCraft"] {
-                want.push(root.join(dir).join("novapdf.exe"));
-                want.push(root.join(dir).join("printcraft.exe"));
-            }
+            want.push(root.join("Nova PDF").join("novapdf.exe"));
         }
         assert_eq!(exe_candidates(pdf, Some(&location), &roots), want);
     }

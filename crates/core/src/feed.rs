@@ -530,10 +530,7 @@ mod tests {
                 "\"repo_renames\": []",
                 r#""repo_renames": [{"old_name": "EuLucaDev/novaphoto", "new_name": "EuLucaDev/novaphoto-app", "renamed_at": null}]"#,
             )
-            .replace(
-                "\"name\": \"Nova Photo\", \"repo\": \"EuLucaDev/novaphoto\"",
-                "\"name\": \"Nova Photo\", \"repo\": \"EuLucaDev/novaphoto-app\"",
-            )
+            .replace("\"name\": \"Nova Photo\", \"repo\": \"EuLucaDev/novaphoto\"", "\"name\": \"Nova Photo\", \"repo\": \"EuLucaDev/novaphoto-app\"")
             .replace("github.com/EuLucaDev/novaphoto/releases", "github.com/EuLucaDev/novaphoto-app/releases");
         let feed = Feed::parse(&moved).unwrap();
         assert_eq!(feed.repo_for(app("novaphoto")), "EuLucaDev/novaphoto-app");
@@ -546,7 +543,7 @@ mod tests {
     }
 
     #[test]
-    fn a_rename_out_of_EuLucaDev_is_dropped() {
+    fn a_rename_out_of_eu_luca_dev_is_dropped() {
         // Even a feed that vouches for the new repository, with matching links and checksums,
         // can't send an app's downloads to another account (#90).
         let moved = sample()

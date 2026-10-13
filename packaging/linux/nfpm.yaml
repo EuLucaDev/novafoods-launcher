@@ -13,7 +13,7 @@ release: 1
 section: utils
 priority: optional
 maintainer: ${NOVAFOODS_LAUNCHER_MAINTAINER}
-vendor: Learning Machines LLC
+vendor: Nova Foods
 homepage: https://github.com/EuLucaDev/novafoods-launcher
 license: MIT OR Apache-2.0
 description: |-

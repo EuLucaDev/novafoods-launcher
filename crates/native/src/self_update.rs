@@ -119,7 +119,7 @@ fn detect(exe: &Path) -> Option<Install> {
 fn msi_install_dir() -> Option<PathBuf> {
     use winreg::RegKey;
     use winreg::enums::HKEY_CURRENT_USER;
-    let key = RegKey::predef(HKEY_CURRENT_USER).open_subkey(r"Software\Learning Machines LLC\Nova Foods Launcher").ok()?;
+    let key = RegKey::predef(HKEY_CURRENT_USER).open_subkey(r"Software\Nova Foods\Nova Foods Launcher").ok()?;
     let dir: String = key.get_value("InstallDir").ok()?;
     let dir = dir.trim();
     (!dir.is_empty()).then(|| PathBuf::from(dir))
@@ -229,7 +229,7 @@ pub fn update(
         #[allow(unreachable_patterns)]
         _ => {
             let _ = (pid, &file);
-            Err("this copy of NovaFoodsLauncher can't update itself; download the new version instead".into())
+            Err("this copy of Nova Foods Launcher can't update itself; download the new version instead".into())
         }
     }
 }
@@ -349,7 +349,7 @@ mod tests {
                 ),
             )
             .unwrap();
-            std::fs::write(contents.join("MacOS/NovaFoods Launcher"), version).unwrap();
+            std::fs::write(contents.join("MacOS/Nova Foods Launcher"), version).unwrap();
         }
         let dir = tempfile::tempdir().unwrap();
         let apps = dir.path().join("Applications");
@@ -359,7 +359,7 @@ mod tests {
         let dmg = dir.path().join("novafoods-launcher-0.2.0-macos-universal.dmg");
         let one_at_a_time = install::macos::DISK_IMAGES.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
         let ok = std::process::Command::new("hdiutil")
-            .args(["create", "-quiet", "-format", "UDZO", "-volname", "NovaFoodsLauncher 0.2.0", "-srcfolder"])
+            .args(["create", "-quiet", "-format", "UDZO", "-volname", "Nova Foods Launcher 0.2.0", "-srcfolder"])
             .arg(&src)
             .arg(&dmg)
             .status()
@@ -367,20 +367,20 @@ mod tests {
             .success();
         assert!(ok, "hdiutil create failed");
         drop(one_at_a_time);
-        let current = apps.join("NovaFoodsLauncher.app");
+        let current = apps.join("Nova Foods Launcher.app");
         let existing = Installed { version: None, source: InstallSource::MacApp, location: current.display().to_string(), package: None };
         // An unsigned test bundle: the signature check has its own tests in `install`.
-        let expect = install::macos::Expect { team: None, version: None };
+        let expect = install::macos::Expect { team: None, verify_signature: false, version: None };
         let placed = install::macos::install_dmg(&LAUNCHER, &dmg, Some(&existing), &Paths::under(dir.path()), &expect).unwrap();
         assert_eq!(placed, current);
-        assert_eq!(std::fs::read_to_string(current.join("Contents/MacOS/NovaFoods Launcher")).unwrap(), "0.2.0");
-        assert!(!dir.path().join("Applications/.NovaFoodsLauncher.app.partial").exists());
+        assert_eq!(std::fs::read_to_string(current.join("Contents/MacOS/Nova Foods Launcher")).unwrap(), "0.2.0");
+        assert!(!dir.path().join("Applications/.Nova Foods Launcher.app.partial").exists());
     }
 
     #[test]
     fn powershell_quoting_survives_apostrophes() {
-        let p = Path::new(r"C:\Users\O'Brien\AppData\Local\NovaFoodsLauncher\x.msi");
-        assert_eq!(ps_quote(p), r"'C:\Users\O''Brien\AppData\Local\NovaFoodsLauncher\x.msi'");
+        let p = Path::new(r"C:\Users\O'Brien\AppData\Local\Nova Foods Launcher\x.msi");
+        assert_eq!(ps_quote(p), r"'C:\Users\O''Brien\AppData\Local\Nova Foods Launcher\x.msi'");
         assert_eq!(ps_quote_arg(p), r#"'"C:\Users\O''Brien\AppData\Local\Nova Foods Launcher\x.msi"'"#);
     }
 

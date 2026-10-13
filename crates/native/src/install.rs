@@ -866,23 +866,25 @@ pub mod macos {
         Ok(user)
     }
 
-    /// The Apple Developer team that signs every Nova Foods App and Nova Foods Launcher (Learning
-    /// Machines LLC): the macOS side of the Windows publisher check.
-    pub const TEAM_ID: &str = "DJ6XS33FX8";
+    /// Set this when Nova Foods configures its own Apple Developer certificate.
+    pub const TEAM_ID: &str = match option_env!("NOVAFOODS_APPLE_TEAM_ID") {
+        Some(team) => team,
+        None => "",
+    };
 
     /// What a new copy must prove before it replaces anything. The checksum shows the download is
     /// the file the release lists; these show the app inside is the one the release promises.
     pub struct Expect<'a> {
-        /// The team whose Developer ID signature the bundle must carry. `None` only in tests,
-        /// which build unsigned bundles.
+        /// Optional Nova Foods Developer ID team. Ad-hoc releases still verify code integrity.
         pub team: Option<&'a str>,
+        pub verify_signature: bool,
         /// The release's version, which the bundle must report. `None` when the tag isn't one.
         pub version: Option<&'a Version>,
     }
 
     impl<'a> Expect<'a> {
         pub fn release(release: &'a Release) -> Self {
-            Self { team: Some(TEAM_ID), version: release.version.as_ref() }
+            Self { team: (!TEAM_ID.is_empty()).then_some(TEAM_ID), verify_signature: true, version: release.version.as_ref() }
         }
     }
 
@@ -943,8 +945,13 @@ pub mod macos {
 
     fn copy_app(app: &CraftApp, mount: &Path, existing: Option<&Installed>, expect: &Expect<'_>) -> Result<PathBuf, String> {
         let bundle = format!("{}.app", app.name);
-        let src = mount.join(&bundle);
-        crate::detect::macos::read_bundle(app, &src).ok_or("the disk image doesn't contain the app")?;
+        let src = std::fs::read_dir(mount)
+            .map_err(|_| "the disk image could not be read")?
+            .filter_map(Result::ok)
+            .map(|entry| entry.path())
+            .filter(|path| path.extension().is_some_and(|ext| ext == "app"))
+            .find(|path| crate::detect::macos::read_bundle(app, path).is_some())
+            .ok_or("the disk image doesn't contain the app")?;
         let dir = applications_dir(existing)?;
         let dest = dir.join(&bundle);
         let staged = dir.join(format!(".{bundle}.partial"));
@@ -969,6 +976,9 @@ pub mod macos {
 
     /// Checks a copied bundle against what its release promises, before it replaces anything.
     fn check(bundle: &Path, found: &Installed, expect: &Expect<'_>) -> Result<(), String> {
+        if expect.verify_signature && !valid_signature(bundle) {
+            return Err("the app isn't signed by its developer, so it wasn't installed".into());
+        }
         if let Some(team) = expect.team
             && !signed_by(bundle, team)
         {
@@ -985,6 +995,11 @@ pub mod macos {
     /// Whether `bundle` has a valid Developer ID signature from `team`, nested code included. The
     /// requirement pins the signer, so a valid ad-hoc or other developer's signature fails it.
     /// Unlike a Gatekeeper assessment it needs no network.
+    pub(super) fn valid_signature(bundle: &Path) -> bool {
+        let Some(path) = bundle.to_str() else { return false };
+        process::run(CODESIGN, &["--verify", "--deep", "--strict", path], Duration::from_secs(120)).is_ok()
+    }
+
     pub fn signed_by(bundle: &Path, team: &str) -> bool {
         let Some(path) = bundle.to_str() else { return false };
         if team.is_empty() || !team.bytes().all(|b| b.is_ascii_alphanumeric()) {
@@ -1632,12 +1647,12 @@ mod tests {
                 format!(
                     "<?xml version=\"1.0\" encoding=\"UTF-8\"?><plist version=\"1.0\"><dict>\
                      <key>CFBundleIdentifier</key><string>br.com.novafoods.novaphoto</string>\
-                     <key>CFBundleExecutable</key><string>NovaPhoto</string>\
+                     <key>CFBundleExecutable</key><string>Nova Photo</string>\
                      <key>CFBundleShortVersionString</key><string>{version}</string></dict></plist>"
                 ),
             )
             .unwrap();
-            std::fs::write(contents.join("MacOS/NovaPhoto"), version).unwrap();
+            std::fs::write(contents.join("MacOS/Nova Photo"), version).unwrap();
             app
         }
 
@@ -1648,7 +1663,7 @@ mod tests {
             let dmg = dir.join(format!("novaphoto-{version}-macos-universal.dmg"));
             let _one_at_a_time = super::macos::DISK_IMAGES.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
             let ok = std::process::Command::new("hdiutil")
-                .args(["create", "-quiet", "-format", "UDZO", "-volname", "NovaPhoto", "-srcfolder"])
+                .args(["create", "-quiet", "-format", "UDZO", "-volname", "Nova Photo", "-srcfolder"])
                 .arg(&src)
                 .arg(&dmg)
                 .status()
@@ -1662,12 +1677,12 @@ mod tests {
         fn only_the_teams_signature_passes() {
             let dir = tempfile::tempdir().unwrap();
             let app = bundle(dir.path(), "0.6.0");
-            assert!(!signed_by(&app, TEAM_ID), "an unsigned bundle passed");
+            assert!(!signed_by(&app, "NOVAFOODSTEST"), "an unsigned bundle passed");
 
             // A valid signature, but not from the team.
             let ok = std::process::Command::new("codesign").args(["--force", "--sign", "-"]).arg(&app).status().unwrap().success();
             assert!(ok, "codesign failed");
-            assert!(!signed_by(&app, TEAM_ID), "an ad-hoc signature passed");
+            assert!(!signed_by(&app, "NOVAFOODSTEST"), "an ad-hoc signature passed");
 
             // A team id can't smuggle anything into the requirement.
             assert!(!signed_by(&app, "X\" or anchor apple generic or \"Y"));
@@ -1686,7 +1701,7 @@ mod tests {
             for (release, ok) in [("0.6.0", true), ("0.7.0", false), ("0.6.0-rc.1", true), ("0.5.0", false)] {
                 std::fs::write(current.join("Contents/MacOS/Nova Photo"), "0.5.0").unwrap();
                 let want = version::parse(release).unwrap();
-                let expect = Expect { team: None, version: Some(&want) };
+                let expect = Expect { team: None, verify_signature: false, version: Some(&want) };
                 let result = install_dmg(novaphoto(), &image, Some(&existing), &paths, &expect);
                 assert_eq!(result.is_ok(), ok, "release {release}: {result:?}");
                 let now = std::fs::read_to_string(current.join("Contents/MacOS/Nova Photo")).unwrap();
@@ -1700,7 +1715,7 @@ mod tests {
             // A bundle that names a pre-release must name the release's.
             let rc = dmg(dir.path(), "0.8.0-rc.2");
             let want = version::parse("0.8.0-rc.1").unwrap();
-            let expect = Expect { team: None, version: Some(&want) };
+            let expect = Expect { team: None, verify_signature: false, version: Some(&want) };
             assert!(install_dmg(novaphoto(), &rc, Some(&existing), &paths, &expect).is_err());
         }
 
@@ -1717,6 +1732,32 @@ mod tests {
             assert_eq!(result, Err("the app isn't signed by its developer, so it wasn't installed".into()));
             assert_eq!(std::fs::read_to_string(current.join("Contents/MacOS/Nova Photo")).unwrap(), "0.5.0");
             assert!(!apps.join(".Nova Photo.app.partial").exists());
+        }
+
+        #[test]
+        fn ad_hoc_builds_still_require_an_intact_code_signature() {
+            let dir = tempfile::tempdir().unwrap();
+            let app = bundle(dir.path(), "0.6.0");
+            let ok = std::process::Command::new("codesign").args(["--force", "--sign", "-"]).arg(&app).status().unwrap().success();
+            assert!(ok);
+            assert!(super::macos::valid_signature(&app));
+            std::fs::write(app.join("Contents/MacOS/Nova Photo"), "tampered").unwrap();
+            assert!(!super::macos::valid_signature(&app));
+        }
+
+        #[test]
+        #[ignore = "requires NOVAFOODS_TEST_DMG pointing at a checksum-verified Nova Photo release"]
+        fn nova_foods_dmg_installs_into_an_isolated_applications_folder() {
+            let image = std::env::var_os("NOVAFOODS_TEST_DMG").map(PathBuf::from).expect("verified DMG path");
+            let dir = tempfile::tempdir().unwrap();
+            let current = bundle(&dir.path().join("Applications"), "0.5.0");
+            let existing = Installed { version: None, source: InstallSource::MacApp, location: current.display().to_string(), package: None };
+            let want = version::parse("0.8.2").unwrap();
+            let expect = Expect { team: None, verify_signature: true, version: Some(&want) };
+            let installed = install_dmg(novaphoto(), &image, Some(&existing), &Paths::under(dir.path()), &expect).unwrap();
+            assert!(installed.starts_with(dir.path()));
+            let found = crate::detect::macos::read_bundle(novaphoto(), &installed).unwrap();
+            assert_eq!(found.version, Some(want));
         }
 
         /// A real release passes. Run with `CRAFT_APP=/path/to/Nova Photo.app cargo test -p

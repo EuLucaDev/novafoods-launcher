@@ -1,12 +1,12 @@
 //! The header, toolbar, footer, the grid of cards and the table, laid out like the apps page on
 //! workflowind.agcunae.com/apps: hairline cells, mono labels and square controls.
 
+use egui::{Color32, CornerRadius, FontId, Rect, RichText, Sense, Stroke, Ui, vec2};
 use novafoods_launcher_core::details::AppDetails;
 use novafoods_launcher_core::platform::pick_asset;
 use novafoods_launcher_core::protocol::{Command, JobPhase};
 use novafoods_launcher_core::status::AppStatus;
 use novafoods_launcher_core::{AppGroup, SUITE, time};
-use egui::{Color32, CornerRadius, FontId, Rect, RichText, Sense, Stroke, Ui, vec2};
 
 use crate::app::{Dialog, LauncherUi, TitleBar};
 use crate::i18n::{current, fmt, t, tn, tr_ctx};
@@ -80,7 +80,9 @@ impl LauncherUi {
             // The Nova Foods wordmark exactly as supplied, in its own cell.
             let logo = vec2(14.0 * crate::icons::NOVAFOODS_LOGO_ASPECT, 14.0);
             let (cell, _) = ui.allocate_exact_size(vec2(logo.x + 40.0, h), Sense::hover());
-            egui::Image::new(crate::icons::novafoods_logo(t.dark)).alt_text(tl!("Nova Foods")).paint_at(ui, Rect::from_center_size(cell.center(), logo));
+            egui::Image::new(crate::icons::novafoods_logo(t.dark))
+                .alt_text(tl!("Nova Foods"))
+                .paint_at(ui, Rect::from_center_size(cell.center(), logo));
             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                 if bar == TitleBar::Custom {
                     widgets::window_buttons(ui, h);

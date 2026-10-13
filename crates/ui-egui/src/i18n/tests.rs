@@ -502,10 +502,10 @@ fn message_templates_match_real_messages() {
          @msg\t{a}{b}\tnever\n",
     );
     assert_eq!(cat.message("Download cancelled").as_deref(), Some("Скачивание отменено"));
-    assert_eq!(cat.message("Couldn't open NovaPhoto: no such file: x").as_deref(), Some("Не удалось открыть NovaPhoto: no such file: x"));
-    assert_eq!(cat.message("NovaPhoto updated to 0.5.0").as_deref(), Some("NovaPhoto обновлено до 0.5.0"));
+    assert_eq!(cat.message("Couldn't open Nova Photo: no such file: x").as_deref(), Some("Не удалось открыть Nova Photo: no such file: x"));
+    assert_eq!(cat.message("Nova Photo updated to 0.5.0").as_deref(), Some("Nova Photo обновлено до 0.5.0"));
     // The template that spells out more of the message wins.
-    assert_eq!(cat.message("NovaPhoto updated to 0.5.0 (no checksum)").as_deref(), Some("NovaPhoto обновлено до 0.5.0 (без суммы)"));
+    assert_eq!(cat.message("Nova Photo updated to 0.5.0 (no checksum)").as_deref(), Some("Nova Photo обновлено до 0.5.0 (без суммы)"));
     // Placeholders never match nothing, and unknown messages aren't touched.
     assert_eq!(cat.message("Couldn't open : x"), None);
     assert_eq!(cat.message("Something else"), None);

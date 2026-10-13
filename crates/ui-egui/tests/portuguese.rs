@@ -3,14 +3,14 @@
 use std::cell::Cell;
 use std::rc::Rc;
 
+use egui_kittest::Harness;
+use egui_kittest::kittest::Queryable;
 use novafoods_launcher_core::protocol::{Backend, Capabilities, Command, Event, JobPhase, LatestRelease, Origin, Source};
 use novafoods_launcher_core::release::{Asset, Release};
 use novafoods_launcher_core::status::InstallSource;
 use novafoods_launcher_core::{Arch, Installed, Os, Platform, SUITE, version};
 use novafoods_launcher_ui_egui::settings::ViewMode;
 use novafoods_launcher_ui_egui::{Host, LauncherUi, Settings};
-use egui_kittest::Harness;
-use egui_kittest::kittest::Queryable;
 
 const NOW: i64 = 1_791_500_000;
 
@@ -79,8 +79,13 @@ fn events() -> Vec<Event> {
 fn harness(view: ViewMode) -> Harness<'static, Option<LauncherUi>> {
     novafoods_launcher_ui_egui::i18n::set_test_lang(novafoods_launcher_ui_egui::i18n::Lang::EN);
     let mut backend = Some(Fake { events: events(), clock: Rc::new(Cell::new(NOW)) });
-    let settings =
-        Settings { view, notify: false, language: "pt-BR".into(), theme: novafoods_launcher_ui_egui::theme::ThemeChoice::Dark, ..Settings::default() };
+    let settings = Settings {
+        view,
+        notify: false,
+        language: "pt-BR".into(),
+        theme: novafoods_launcher_ui_egui::theme::ThemeChoice::Dark,
+        ..Settings::default()
+    };
     Harness::builder().with_size(egui::vec2(1180.0, 900.0)).with_theme(egui::Theme::Dark).build_ui_state(
         move |ui, state: &mut Option<LauncherUi>| {
             if state.is_none()

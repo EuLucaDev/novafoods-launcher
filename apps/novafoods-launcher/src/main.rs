@@ -21,12 +21,12 @@ use std::sync::mpsc::{Receiver, RecvTimeoutError, SyncSender, channel, sync_chan
 use std::sync::{Arc, Mutex, OnceLock, PoisonError};
 use std::time::Duration;
 
+use eframe::wgpu::rwh::{HasDisplayHandle, RawDisplayHandle};
 use novafoods_launcher_core::protocol::Backend;
 use novafoods_launcher_native::single_instance::{self, Instance};
 use novafoods_launcher_native::{NativeBackend, login};
 use novafoods_launcher_ui_egui::theme::Tokens;
 use novafoods_launcher_ui_egui::{Host, LauncherUi, Settings, TitleBar};
-use eframe::wgpu::rwh::{HasDisplayHandle, RawDisplayHandle};
 
 const APP_ID: &str = "br.com.novafoods.novafoods-launcher";
 const SETTINGS_KEY: &str = "settings";
@@ -131,7 +131,8 @@ fn main() -> ExitCode {
 
 fn native_options(hidden: bool) -> eframe::NativeOptions {
     let icon =
-        eframe::icon_data::from_png_bytes(include_bytes!("../../../assets/app-icon/hicolor/256x256/apps/br.com.novafoods.novafoods-launcher.png")).ok();
+        eframe::icon_data::from_png_bytes(include_bytes!("../../../assets/app-icon/hicolor/256x256/apps/br.com.novafoods.novafoods-launcher.png"))
+            .ok();
     let mut viewport = egui::ViewportBuilder::default()
         .with_title("Nova Foods Launcher")
         .with_app_id(APP_ID)
@@ -721,8 +722,8 @@ mod tests {
     use std::sync::mpsc::Sender;
     use std::time::Instant;
 
-    use novafoods_launcher_core::protocol::{Capabilities, Command, Event, Source};
     use eframe::wgpu::rwh::{AppKitDisplayHandle, WaylandDisplayHandle, WindowsDisplayHandle, XcbDisplayHandle, XlibDisplayHandle};
+    use novafoods_launcher_core::protocol::{Capabilities, Command, Event, Source};
 
     use super::*;
 

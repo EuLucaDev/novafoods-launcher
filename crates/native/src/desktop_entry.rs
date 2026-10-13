@@ -143,10 +143,10 @@ mod tests {
     fn writes_a_complete_entry() {
         let text = render(app("novaphoto"), Path::new("/home/ana/Applications/novaphoto-0.6.0-linux-x86_64.AppImage"), true).unwrap();
         let expected = format!(
-            "[Desktop Entry]\nType=Application\nName=NovaPhoto\nComment={}\n\
+            "[Desktop Entry]\nType=Application\nName=Nova Photo\nComment={}\n\
              Exec=\"/home/ana/Applications/novaphoto-0.6.0-linux-x86_64.AppImage\" %F\n\
              Icon=br.com.novafoods.novaphoto\nTerminal=false\nCategories=Graphics;2DGraphics;RasterGraphics;Photography;\n\
-             StartupWMClass=novaphoto\nX-NovaFoods-Launcher=true\n",
+             StartupWMClass=novaphoto\nX-Nova Foods-Launcher=true\n",
             app("novaphoto").tagline
         );
         assert_eq!(text, expected);

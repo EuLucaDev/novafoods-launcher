@@ -46,7 +46,11 @@ fn load_icon() -> Result<tray_icon::Icon, String> {
 /// Windows and macOS keep tray-icon's defaults: there the title is drawn next to the icon (macOS)
 /// or unsupported (Windows), and the id never reaches the user.
 fn identity(builder: TrayIconBuilder) -> TrayIconBuilder {
-    if cfg!(any(target_os = "macos", target_os = "windows")) { builder } else { builder.with_id("novafoods-launcher").with_title("Nova Foods Launcher") }
+    if cfg!(any(target_os = "macos", target_os = "windows")) {
+        builder
+    } else {
+        builder.with_id("novafoods-launcher").with_title("Nova Foods Launcher")
+    }
 }
 
 impl Tray {

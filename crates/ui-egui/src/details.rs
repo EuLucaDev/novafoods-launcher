@@ -5,10 +5,10 @@
 use novafoods_launcher_core::CraftApp;
 use std::sync::Arc;
 
+use egui::{Color32, CornerRadius, Id, Margin, Order, Rect, RichText, Sense, Stroke, Ui, emath::easing, pos2, vec2};
 use novafoods_launcher_core::details::AppDetails;
 use novafoods_launcher_core::platform::pick_asset;
 use novafoods_launcher_core::protocol::Command;
-use egui::{Color32, CornerRadius, Id, Margin, Order, Rect, RichText, Sense, Stroke, Ui, emath::easing, pos2, vec2};
 
 use crate::app::LauncherUi;
 use crate::model::AppEntry;

@@ -1,9 +1,9 @@
 //! Modal dialogs: release notes, uninstall confirmation, settings.
 
 use crate::i18n::fmt;
+use egui::{RichText, vec2};
 use novafoods_launcher_core::protocol::Command;
 use novafoods_launcher_core::{Os, PackageKind};
-use egui::{RichText, vec2};
 
 use crate::app::{Dialog, Host, LauncherUi};
 use crate::settings::{CheckEvery, Settings};
@@ -328,7 +328,7 @@ impl LauncherUi {
                     .on_hover_text(tl!("When on, opening the launcher from the menu bar brings its window to the desktop you're on. When off, macOS switches you to the desktop the window was on."));
             }
             if let Some(mut on) = host.login_item()
-                && ui.checkbox(&mut on, tl!("Start NovaFoodsLauncher when I log in")).changed()
+                && ui.checkbox(&mut on, tl!("Start Nova Foods Launcher when I log in")).changed()
                 && let Err(e) = host.set_login_item(on)
             {
                 let ctx = ui.ctx().clone();
@@ -337,7 +337,7 @@ impl LauncherUi {
         }
 
         section(ui, tl!("Community"));
-        ui.label(RichText::new(tl!("Questions, ideas and news from the NovaFoods team")).color(t.muted));
+        ui.label(RichText::new(tl!("Questions, ideas and news from the Nova Foods team")).color(t.muted));
         ui.add_space(6.0);
         ui.horizontal_wrapped(|ui| {
             use novafoods_launcher_core::catalog::{DISCORD_URL, GITHUB_URL, WEBSITE_URL};

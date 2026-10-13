@@ -7,6 +7,8 @@ use std::cell::{Cell, RefCell};
 use std::rc::Rc;
 use std::sync::OnceLock;
 
+use egui_kittest::Harness;
+use egui_kittest::kittest::{NodeT, Queryable};
 use novafoods_launcher_core::details::AppDetails;
 use novafoods_launcher_core::protocol::{
     Backend, CANCELLED, Capabilities, Command, Event, INSTALL_CANCELLED, JobPhase, LatestRelease, Origin, PausedDownload, Source,
@@ -16,8 +18,6 @@ use novafoods_launcher_core::status::InstallSource;
 use novafoods_launcher_core::{Arch, Installed, Os, Platform, SUITE, version};
 use novafoods_launcher_ui_egui::settings::ViewMode;
 use novafoods_launcher_ui_egui::{Host, LauncherUi, Settings};
-use egui_kittest::Harness;
-use egui_kittest::kittest::{NodeT, Queryable};
 
 const NOW: i64 = 1_791_500_000;
 
