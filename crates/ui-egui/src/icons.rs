@@ -32,8 +32,8 @@ pub fn novafoods_logo(dark_background: bool) -> ImageSource<'static> {
     }
 }
 
-/// The Nova Foods wordmark's width / height (its SVG view box: 1038.05 × 108).
-pub const NOVAFOODS_LOGO_ASPECT: f32 = 1038.05 / 108.0;
+/// The Nova Foods logo's width / height (its SVG view box: 1712.05 × 735.57).
+pub const NOVAFOODS_LOGO_ASPECT: f32 = 1712.05 / 735.57;
 
 /// A social service's logo (Simple Icons, white, for tinting), by its name in `catalog::SOCIAL`.
 pub fn social(service: &str) -> Option<ImageSource<'static>> {

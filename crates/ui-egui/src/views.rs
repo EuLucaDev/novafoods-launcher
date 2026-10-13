@@ -78,7 +78,7 @@ impl LauncherUi {
                 ui.add_space(TRAFFIC_LIGHTS_W);
             }
             // The Nova Foods wordmark exactly as supplied, in its own cell.
-            let logo = vec2(14.0 * crate::icons::NOVAFOODS_LOGO_ASPECT, 14.0);
+            let logo = vec2(26.0 * crate::icons::NOVAFOODS_LOGO_ASPECT, 26.0);
             let (cell, _) = ui.allocate_exact_size(vec2(logo.x + 40.0, h), Sense::hover());
             egui::Image::new(crate::icons::novafoods_logo(t.dark))
                 .alt_text(tl!("Nova Foods"))
