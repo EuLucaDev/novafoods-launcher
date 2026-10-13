@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- AppStream metadata (software centres, Flathub). Template: package.sh and the Flatpak
+     manifest substitute @VERSION@ and @DATE@ from Cargo.toml and the build date. -->
+<component type="desktop-application">
+  <id>br.com.novafoods.novafoods-launcher</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT OR Apache-2.0</project_license>
+  <name>Nova Foods Launcher</name>
+  <summary>Install, update and launch the Nova Foods Apps</summary>
+  <developer id="ai.novafoods">
+    <name>Learning Machines LLC</name>
+  </developer>
+  <description>
+    <p>
+      Nova Foods Launcher lists every app in the Nova Foods Apps (Nova Photo, Nova Light, Nova Film,
+      Nova Design, Nova Vector, Nova PDF, Nova Effect, Nova Word, Nova Deck, Nova Grid, Nova CAD
+      and Nova Sound), installs the right build for your computer, and keeps them up to date.
+    </p>
+    <ul>
+      <li>One place to find, install and open every Nova Foods app</li>
+      <li>Checks GitHub releases for updates and installs them for you</li>
+      <li>Lives in the system tray and tells you when updates are ready</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">br.com.novafoods.novafoods-launcher.desktop</launchable>
+  <icon type="stock">br.com.novafoods.novafoods-launcher</icon>
+  <!-- Only url types known to appstream 0.15 (Ubuntu 22.04, where CI validates): no vcs-browser. -->
+  <url type="homepage">https://workflowind.agcunae.com/apps</url>
+  <url type="bugtracker">https://github.com/EuLucaDev/novafoods-launcher/issues</url>
+  <url type="help">https://github.com/EuLucaDev/novafoods-launcher</url>
+  <url type="contact">https://workflowind.agcunae.com/inbox</url>
+  <categories>
+    <category>Utility</category>
+    <category>PackageManager</category>
+  </categories>
+  <keywords>
+    <keyword>launcher</keyword>
+    <keyword>installer</keyword>
+    <keyword>updater</keyword>
+    <keyword>novafoods</keyword>
+  </keywords>
+  <branding>
+    <color type="primary" scheme_preference="light">#d9dce3</color>
+    <color type="primary" scheme_preference="dark">#26282e</color>
+  </branding>
+  <supports>
+    <control>keyboard</control>
+    <control>pointing</control>
+  </supports>
+  <provides>
+    <binary>novafoods-launcher</binary>
+  </provides>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="@VERSION@" date="@DATE@"/>
+  </releases>
+</component>
