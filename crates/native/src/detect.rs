@@ -81,7 +81,7 @@ pub(crate) fn appimage_version(name: &str, stems: &[&str]) -> Option<Option<Stri
     if !ext.eq_ignore_ascii_case(".appimage") {
         return None;
     }
-    if stems.iter().any(|s| base.eq_ignore_ascii_case(s)) {
+    if stems.iter().any(|s| base.replace(' ', "").eq_ignore_ascii_case(s)) {
         return Some(None);
     }
     let parsed = novafoods_launcher_core::platform::parse_asset_name(&format!("{base}.AppImage"), stems)?;

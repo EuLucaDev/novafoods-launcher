@@ -138,12 +138,12 @@ mod tests {
         let photo = CraftApp::by_id("novaphoto").unwrap();
         let pdf = CraftApp::by_id("novapdf").unwrap();
         let installed =
-            pkgs(InstallSource::Pacman, parse_pacman("linux 6.11.1.arch1-1\nnovaphoto-git 0.3.0.r47.g47f9306-1\nprintcraft-bin 0.2.1-1\n"));
+            pkgs(InstallSource::Pacman, parse_pacman("linux 6.11.1.arch1-1\nnovaphoto-git 0.3.0.r47.g47f9306-1\nnovapdf-bin 0.2.1-1\n"));
         let hit = find(photo, &installed, &[InstallSource::Pacman]).unwrap();
         assert_eq!(hit.name, "novaphoto-git");
         assert_eq!(version_of(hit).unwrap().to_string(), "0.3.0");
-        // Nova PDF under its old name.
-        assert_eq!(find(pdf, &installed, &[InstallSource::Pacman]).unwrap().name, "printcraft-bin");
+        // Nova PDF under its own package identity.
+        assert_eq!(find(pdf, &installed, &[InstallSource::Pacman]).unwrap().name, "novapdf-bin");
         assert!(find(CraftApp::by_id("novaword").unwrap(), &installed, &[InstallSource::Pacman]).is_none());
     }
 
