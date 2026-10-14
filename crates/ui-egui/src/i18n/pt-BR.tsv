@@ -153,12 +153,12 @@ novalight	Photo library and raw development	Biblioteca de fotos e revelação RA
 novapdf	Reading, organizing and protecting PDFs	Leitura, organização e proteção de PDFs
 novaeffect	Motion graphics and visual effects	Motion graphics e efeitos visuais
 novadesign	Page layout and publishing	Diagramação de páginas e publicação
-novafig	Interface design and prototyping	Design de interface e protótipos
 novaword	Writing and document design	Escrita e design de documentos
 novadeck	Presentations and slide shows	Apresentações e slides
 novagrid	Spreadsheets and data	Planilhas e dados
 novacad	Computer-aided design and drafting	Desenho técnico e projeto assistido por computador (CAD)
 novasound	Recording, editing and mixing audio	Gravação, edição e mixagem de áudio
+novafig	Interface design and prototyping	Design de interfaces e prototipagem
 
 # Contextual: month abbreviations for date rendering
 month	Jan	jan.

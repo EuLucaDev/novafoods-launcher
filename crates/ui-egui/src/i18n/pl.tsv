@@ -13,7 +13,7 @@
 # Coverage: the whole interface — every menu string and tl! literal (complete_menus = true).
 # Left in English on purpose: product name "Nova Foods Launcher" (and its "Launcher" tag), suite
 # name "Nova Foods Apps", app names (Nova Photo, Nova Light, Nova Film, Nova Design, Nova Vector,
-# Nova PDF, Nova Effect, Nova Word, Nova Deck, Nova Grid, Nova CAD, Nova Sound), "GitHub",
+# Nova PDF, Nova Effect, Nova Word, Nova Deck, Nova Grid, Nova CAD, Nova Sound, Nova Fig), "GitHub",
 # "Suporte".
 # Shortcut keys keep their key-cap names (Shift, Alt, Ctrl, Cmd, Esc).
 # Trailing "…" (U+2026) must be preserved. Placeholders {name}, {n}, {version}, {count}, {v},
@@ -171,6 +171,7 @@ novadeck	Presentations and slide shows	Prezentacje i pokazy slajdów
 novagrid	Spreadsheets and data	Arkusze kalkulacyjne i dane
 novacad	Computer-aided design and drafting	Projektowanie i kreślenie wspomagane komputerowo
 novasound	Recording, editing and mixing audio	Nagrywanie, edycja i miksowanie dźwięku
+novafig	Interface design and prototyping	Projektowanie interfejsów i prototypowanie
 
 # Contextual: month abbreviations for date rendering
 month	Jan	sty

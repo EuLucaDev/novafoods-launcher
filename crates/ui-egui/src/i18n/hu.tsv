@@ -14,7 +14,7 @@
 # Left in English on purpose: product name "Nova Foods Launcher" (and its "Launcher" tag), suite
 # name "Nova Foods Apps",
 # app names (Nova Photo, Nova Light, Nova Film, Nova Design, Nova Vector, Nova PDF, Nova Effect,
-# Nova Word, Nova Deck, Nova Grid, Nova CAD, Nova Sound), "GitHub", "Suporte".
+# Nova Word, Nova Deck, Nova Grid, Nova CAD, Nova Sound, Nova Fig), "GitHub", "Suporte".
 # Shortcut keys keep their key-cap names (Shift, Alt, Ctrl, Cmd, Esc).
 # Trailing "…" (U+2026) must be preserved. Placeholders {name}, {n}, {version}, {count}, {v},
 # {what}, {unit}, {real}, {e} must appear in translation.
@@ -170,6 +170,7 @@ novadeck	Presentations and slide shows	Prezentációk és diavetítések
 novagrid	Spreadsheets and data	Táblázatok és adatok
 novacad	Computer-aided design and drafting	Számítógépes tervezés és műszaki rajz
 novasound	Recording, editing and mixing audio	Hangrögzítés, hangszerkesztés és keverés
+novafig	Interface design and prototyping	Felülettervezés és prototípus-készítés
 
 # Contextual: month abbreviations for date rendering
 month	Jan	jan.

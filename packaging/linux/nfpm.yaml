@@ -19,9 +19,9 @@ license: MIT OR Apache-2.0
 description: |-
   Install, update and launch the Nova Foods Apps.
   NovaFoodsLauncher lists NovaPhoto, NovaLight, NovaFilm, NovaDesign,
-  NovaVector, NovaPdf, NovaEffect, NovaWord, NovaDeck, NovaGrid, NovaCad
-  and NovaSound, installs the right build for this computer and keeps them up
-  to date from GitHub releases. It can live in the system tray.
+  NovaVector, NovaPdf, NovaEffect, NovaWord, NovaDeck, NovaGrid, NovaCad,
+  NovaSound and NovaFig, installs the right build for this computer and keeps
+  them up to date from GitHub releases. It can live in the system tray.
 
 # The binary links only glibc and libgcc_s directly. Windowing (X11/Wayland, xkbcommon) and the
 # GPU (Vulkan, EGL/GL) are loaded at runtime with dlopen, so they aren't ELF NEEDED entries and

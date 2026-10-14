@@ -256,13 +256,16 @@ mod tests {
     fn reads_asset_names() {
         let n = parse_asset_name("novaphoto-0.2.0-rc.1-windows-arm64-portable.zip", &["novaphoto"]).unwrap();
         assert_eq!((n.version.as_str(), n.token.as_str(), n.kind), ("0.2.0-rc.1", "windows-arm64", PackageKind::PortableZip));
-        let n = parse_asset_name("printcraft-0.2.1-linux-x86_64.tar.gz", &["novapdf", "printcraft"]).unwrap();
-        assert_eq!((n.stem.as_str(), n.kind), ("printcraft", PackageKind::TarGz));
+        let n = parse_asset_name("novapdf-legacy-0.2.1-linux-x86_64.tar.gz", &["novapdf", "novapdf-legacy"]).unwrap();
+        assert_eq!((n.stem.as_str(), n.kind), ("novapdf-legacy", PackageKind::TarGz));
         for other in
             ["novaphoto-cli-0.5.0-macos-universal.zip", "novaphoto-web-0.5.0.zip", "SHA256SUMS.txt", "novaphoto-0.5.0-linux-x86_64.AppImage.zsync"]
         {
             assert_eq!(parse_asset_name(other, &["novaphoto"]), None, "{other}");
         }
+        // Nova Fig also ships its collaboration server; that tarball is not the app.
+        assert_eq!(parse_asset_name("novafig-server-0.5.1-linux-x86_64.tar.gz", &["novafig"]), None);
+        assert!(parse_asset_name("novafig-0.5.1-linux-x86_64.tar.gz", &["novafig"]).is_some());
     }
 
     #[test]

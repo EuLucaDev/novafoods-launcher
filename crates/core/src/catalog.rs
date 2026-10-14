@@ -43,9 +43,9 @@ pub struct CraftApp {
     pub ink_dark: [u8; 3],
     /// GitHub `owner/repo`.
     pub repo: &'static str,
-    /// Older names its release assets may carry (Nova PDF shipped as PrintCraft until 0.2.1).
+    /// Older machine names a Nova Foods release may carry.
     pub former_ids: &'static [&'static str],
-    /// Older display names its installers registered (Nova PDF's MSI said PrintCraft until 0.2.1).
+    /// Older display names registered by Nova Foods installers.
     pub former_names: &'static [&'static str],
 }
 
@@ -237,7 +237,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn suite_has_seven_classic_and_five_new_apps_with_unique_ids() {
+    fn suite_has_seven_classic_and_six_new_apps_with_unique_ids() {
         assert_eq!(SUITE.iter().filter(|a| a.group == AppGroup::Classic).count(), 7);
         assert_eq!(SUITE.iter().filter(|a| a.group == AppGroup::New).count(), 6);
         let mut ids: Vec<_> = SUITE.iter().map(|a| a.id).collect();

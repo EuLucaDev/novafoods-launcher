@@ -14,7 +14,7 @@
 # Left in English on purpose: product name "Nova Foods Launcher" (and its "Launcher" tag), suite
 # name "Nova Foods Apps", app names (Nova Photo, Nova Light, Nova Film,
 # Nova Design, Nova Vector, Nova PDF, Nova Effect, Nova Word, Nova Deck, Nova Grid, Nova CAD,
-# Nova Sound), "GitHub", "Suporte", "Finder", "makers".
+# Nova Sound, Nova Fig), "GitHub", "Suporte", "Finder", "makers".
 # Trailing "…" (U+2026) must be preserved. Placeholders must appear in the translation:
 # {ago}, {a}, {b}, {count}, {date}, {day}, {done}, {e}, {f}, {installed}, {latest}, {min},
 # {month}, {name}, {n}, {os}, {platform}, {sources}, {total}, {version}, {v}, {year}.
@@ -165,6 +165,7 @@ novadeck	Presentations and slide shows	Presentaciones y diapositivas
 novagrid	Spreadsheets and data	Hojas de cálculo y datos
 novacad	Computer-aided design and drafting	CAD: diseño y dibujo técnico
 novasound	Recording, editing and mixing audio	Grabación, edición y mezcla de audio
+novafig	Interface design and prototyping	Diseño de interfaces y prototipos
 month	Jan	ene.
 month	Feb	feb.
 month	Mar	mar.

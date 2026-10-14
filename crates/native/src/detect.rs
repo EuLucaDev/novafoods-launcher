@@ -110,7 +110,7 @@ fn exe_candidates(app: &CraftApp, location: Option<&Path>, program_files: &[Path
 }
 
 /// Version from `<app> --version` output. Binaries print the machine id (`novaphoto 0.7.0`),
-/// the display name (`Nova Sound 0.5.0`), or a former id (`printcraft 0.2.1` for Nova PDF).
+/// the display name (`Nova Sound 0.5.0`), or an older machine id.
 #[cfg_attr(not(any(target_os = "linux", target_os = "freebsd")), allow(dead_code))]
 fn parse_cli_version(line: &str, app: &CraftApp) -> Option<version::Version> {
     let line = line.trim();
@@ -477,7 +477,7 @@ mod linux_tests {
         };
         let sound = write("novasound", "#!/bin/sh\necho 'Nova Sound 0.5.0'\n");
         assert_eq!(linux::binary_version(&sound, CraftApp::by_id("novasound").unwrap()).unwrap().to_string(), "0.5.0");
-        let pdf = write("novapdf", "#!/bin/sh\necho 'printcraft 0.2.1'\n");
+        let pdf = write("novapdf", "#!/bin/sh\necho 'novapdf 0.2.1'\n");
         assert_eq!(linux::binary_version(&pdf, CraftApp::by_id("novapdf").unwrap()).unwrap().to_string(), "0.2.1");
     }
 }
@@ -490,10 +490,10 @@ mod tests {
 
     #[test]
     fn recognises_appimage_names_conservatively() {
-        let pdf = ["novapdf", "printcraft"];
+        let pdf = ["novapdf", "novapdf-legacy"];
         let v = |n: &str| appimage_version(n, &pdf);
         assert_eq!(v("novapdf-0.3.0-linux-x86_64.AppImage"), Some(Some("0.3.0".into())));
-        assert_eq!(v("printcraft-0.2.1-linux-aarch64.appimage"), Some(Some("0.2.1".into())));
+        assert_eq!(v("novapdf-legacy-0.2.1-linux-aarch64.appimage"), Some(Some("0.2.1".into())));
         assert_eq!(v("novapdf-0.3.0-rc.1-linux-x86_64.AppImage"), Some(Some("0.3.0-rc.1".into())));
         // Gear Lever's rename, and a plain rename by hand.
         assert_eq!(v("novapdf.appimage"), Some(None));
@@ -520,7 +520,7 @@ mod tests {
         let pdf = CraftApp::by_id("novapdf").unwrap();
         assert_eq!(parse_cli_version("novaphoto 0.7.0 (dev build)", photo).unwrap().to_string(), "0.7.0");
         assert_eq!(parse_cli_version("Nova Sound 0.5.0", sound).unwrap().to_string(), "0.5.0");
-        assert_eq!(parse_cli_version("printcraft 0.2.1", pdf).unwrap().to_string(), "0.2.1");
+        assert_eq!(parse_cli_version("novapdf 0.2.1", pdf).unwrap().to_string(), "0.2.1");
         assert_eq!(parse_cli_version("Nova PDF 0.6.0", pdf).unwrap().to_string(), "0.6.0");
         assert!(strip_cli_prefix("novaphoto-cli 1.0.0", "novaphoto").is_none());
     }
@@ -558,9 +558,9 @@ mod tests {
     }
 
     #[test]
-    fn novapdf_rejects_upstream_printcraft_installer_name() {
+    fn novapdf_rejects_another_installer_name() {
         let pdf = CraftApp::by_id("novapdf").unwrap();
-        assert!(!is_installer_entry(pdf, "PrintCraft", LEARNING_MACHINES), "a PrintCraft entry from {LEARNING_MACHINES} should be Nova PDF's");
+        assert!(!is_installer_entry(pdf, "Other PDF", LEARNING_MACHINES), "an unrelated entry from {LEARNING_MACHINES} must not match Nova PDF");
     }
 
     #[test]
@@ -570,19 +570,19 @@ mod tests {
     }
 
     #[test]
-    fn printcraft_entries_match_nothing_else() {
+    fn unrelated_entries_match_nothing_else() {
         let pdf = CraftApp::by_id("novapdf").unwrap();
-        assert!(!is_installer_entry(pdf, "PrintCraft", "Some Other Publisher"));
+        assert!(!is_installer_entry(pdf, "Other PDF", "Some Other Publisher"));
         assert!(!is_installer_entry(pdf, "Nova Photo", LEARNING_MACHINES));
         for a in SUITE.iter().filter(|a| a.id != "novapdf") {
-            assert!(!is_installer_entry(a, "PrintCraft", LEARNING_MACHINES), "PrintCraft matched {}", a.name);
+            assert!(!is_installer_entry(a, "Other PDF", LEARNING_MACHINES), "unrelated entry matched {}", a.name);
         }
     }
 
     #[test]
     fn novapdf_exe_is_sought_under_every_name_it_has_shipped_as() {
         let pdf = CraftApp::by_id("novapdf").unwrap();
-        let location = PathBuf::from(r"D:\Apps\PrintCraft");
+        let location = PathBuf::from(r"D:\Apps\NovaPDF");
         let roots = roots();
         let mut want = vec![location.join("novapdf.exe")];
         for root in &roots {

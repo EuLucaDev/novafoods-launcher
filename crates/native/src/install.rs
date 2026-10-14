@@ -741,12 +741,12 @@ pub(crate) mod linux {
             "novapdf" => include_bytes!("../../../assets/app-icons/novapdf.png"),
             "novaeffect" => include_bytes!("../../../assets/app-icons/novaeffect.png"),
             "novadesign" => include_bytes!("../../../assets/app-icons/novadesign.png"),
-            "novafig" => include_bytes!("../../../assets/app-icons/novafig.png"),
             "novaword" => include_bytes!("../../../assets/app-icons/novaword.png"),
             "novadeck" => include_bytes!("../../../assets/app-icons/novadeck.png"),
             "novagrid" => include_bytes!("../../../assets/app-icons/novagrid.png"),
             "novacad" => include_bytes!("../../../assets/app-icons/novacad.png"),
             "novasound" => include_bytes!("../../../assets/app-icons/novasound.png"),
+            "novafig" => include_bytes!("../../../assets/app-icons/novafig.png"),
             _ => return None,
         })
     }

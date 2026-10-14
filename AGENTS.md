@@ -2,7 +2,7 @@
 
 Nova Foods Launcher installs, updates and launches the **Nova Foods Apps** (Nova Photo, Nova Light,
 Nova Film, Nova Design, Nova Vector, Nova PDF, Nova Effect, Nova Word, Nova Deck, Nova Grid,
-Nova CAD, Nova Sound). It is written in **Rust only** (no JavaScript or TypeScript): the desktop
+Nova CAD, Nova Sound, Nova Fig). It is written in **Rust only** (no JavaScript or TypeScript): the desktop
 app is native egui/eframe, and the web build is the same Rust compiled to WebAssembly (trunk +
 wasm-bindgen). **No Tauri, Electron or webview shells**, ever.
 
@@ -92,8 +92,7 @@ Every user-facing string goes through `crates/ui-egui/src/i18n` (`tl!("…")` fo
 for `{placeholders}`, `tn` for counts). English in the code is the lookup key; adding a string
 means adding its row to every catalog marked `complete_menus` (the `*.tsv` files in
 `crates/ui-egui/src/i18n/`), which the i18n tests check. Translate clean-room from the meaning of
-the English text, never through another catalog. Product and app names (Nova Foods Launcher, Craft
-App Suite, Nova Photo…) stay in English.
+the English text, never through another catalog. Product and app names (Nova Foods Launcher, Nova Foods App Suite, Nova Photo…) stay in English.
 A CJK language is drawn with the system's own CJK font (`crates/ui-egui/src/cjk_font.rs`, desktop
 only; English where there is none): never bundle a CJK font, they are 10 MB and more.
 

@@ -12,7 +12,7 @@
 <p align="center">
   <b>One place to install, update and open every app in the Nova Foods Apps, rebuilt in pure Rust.</b><br>
   Nova Photo, Nova Light, Nova Film, Nova Design, Nova Vector, Nova PDF, Nova Effect, Nova Word,<br>
-  Nova Deck, Nova Grid, Nova CAD and Nova Sound: the right build for your computer, kept up to date.
+  Nova Deck, Nova Grid, Nova CAD, Nova Sound and Nova Fig: the right build for your computer, kept up to date.
 </p>
 
 <p align="center">
@@ -247,6 +247,7 @@ stand on its own.
 | <img src="https://raw.githubusercontent.com/EuLucaDev/novadeck/main/assets/app-icon/hicolor/64x64/apps/br.com.novafoods.novadeck.png" alt="" width="32" height="32"> | **Nova Deck** | Presentations and slide decks | [GitHub](https://github.com/EuLucaDev/novadeck) | [Website](https://workflowind.agcunae.com/apps/novadeck) |
 | <img src="https://raw.githubusercontent.com/EuLucaDev/novacad/main/assets/app-icon/hicolor/64x64/apps/br.com.novafoods.novacad.png" alt="" width="32" height="32"> | **Nova CAD** | Computer-aided design | [GitHub](https://github.com/EuLucaDev/novacad) | [Website](https://workflowind.agcunae.com/apps/novacad) |
 | <img src="https://raw.githubusercontent.com/EuLucaDev/novasound/main/assets/app-icon/hicolor/64x64/apps/br.com.novafoods.novasound.png" alt="" width="32" height="32"> | **Nova Sound** | Audio recording and editing | [GitHub](https://github.com/EuLucaDev/novasound) | [Website](https://workflowind.agcunae.com/apps/novasound) |
+| <img src="https://raw.githubusercontent.com/EuLucaDev/novafig/main/assets/app-icon/hicolor/64x64/apps/br.com.novafoods.novafig.png" alt="" width="32" height="32"> | **Nova Fig** | Interface design and prototyping | [GitHub](https://github.com/EuLucaDev/novafig) | [Website](https://workflowind.agcunae.com/apps/novafig) |
 
 And [**Nova Foods**](https://workflowind.agcunae.com/apps/) itself, our AI image and video studio for artists who want real control.
 

@@ -31,6 +31,7 @@ const APPS: &[(&str, &str)] = &[
     ("novagrid", "Nova Grid"),
     ("novacad", "Nova CAD"),
     ("novasound", "Nova Sound"),
+    ("novafig", "Nova Fig"),
 ];
 
 const DEFAULT_PORT: u16 = 8787;

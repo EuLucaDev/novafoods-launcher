@@ -227,20 +227,6 @@ pub const DETAILS: [AppDetails; 13] = [
         platforms: PLATFORMS,
     },
     AppDetails {
-        id: "novafig",
-        headline: "Interface design and prototyping, together in real time.",
-        about: "A native design tool for screens, components and clickable prototypes, written in Rust. \
-                Invite anyone to the same file and design together, live.",
-        features: &[
-            feature("Design together", "Host a file and invite as many people as you need; everyone edits the same canvas live."),
-            feature("Components and variants", "Reusable components, variants and auto layout that behave the way you expect."),
-            feature("Prototypes", "Link frames, add interactions and present a clickable prototype."),
-            feature("Dev mode", "Inspect sizes, colors and spacing, and export assets for developers."),
-        ],
-        shots: &[shot("hero", "Designing an app screen"), shot("components", "Components and variants"), shot("prototype", "A clickable prototype")],
-        platforms: PLATFORMS,
-    },
-    AppDetails {
         id: "novaword",
         headline: "The familiar word processor, native and offline.",
         about: "A word processor with the ribbon, shortcuts and behavior you already know, written in Rust. \
@@ -382,6 +368,42 @@ pub const DETAILS: [AppDetails; 13] = [
             shot("mix", "The Mix window"),
             shot("automation", "Automation and memory locations"),
             shot("score", "The Score Editor"),
+        ],
+        platforms: PLATFORMS,
+    },
+    AppDetails {
+        id: "novafig",
+        headline: "Interface design and prototyping, in pure Rust.",
+        about: "Design screens, components and prototypes in a native app that opens instantly and works offline, \
+                with no account and no telemetry. Early alpha.",
+        features: &[
+            feature("Design together", "Host a file and invite as many people as you need; everyone edits the same canvas live."),
+            feature(
+                "Auto layout",
+                "Rows, columns, wrap and grids with padding, gaps and Hug, Fill or Fixed sizing, plus constraints and layout grids.",
+            ),
+            feature(
+                "Components",
+                "Instances with overrides, variants and properties, styles, and variables with modes bound to fills, strokes and effects.",
+            ),
+            feature("Vectors", "Real vector networks, the pen and pencil, the shape builder, editable booleans and variable width strokes."),
+            feature(
+                "Prototypes",
+                "Connections, triggers and animated transitions, variables with conditionals, flows and a presentation view with device frames.",
+            ),
+            feature(
+                "Hand off",
+                "Inspect mode with measurements, annotations, ready-for-dev status, and code for CSS, HTML, React, SwiftUI and Compose.",
+            ),
+            feature(
+                "Your files",
+                "Plain .novafig files on your own disk. SVG, PNG, JPEG, WebP and PDF in and out, and .fig files open, best effort.",
+            ),
+        ],
+        shots: &[
+            shot("hero", "Designing an app screen"),
+            shot("components", "Components and variants"),
+            shot("prototype", "A clickable prototype"),
         ],
         platforms: PLATFORMS,
     },

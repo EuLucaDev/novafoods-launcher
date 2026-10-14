@@ -12,12 +12,12 @@ pub fn app(id: &str) -> Option<ImageSource<'static>> {
         "novapdf" => egui::include_image!("../../../assets/app-icons/novapdf.png"),
         "novaeffect" => egui::include_image!("../../../assets/app-icons/novaeffect.png"),
         "novadesign" => egui::include_image!("../../../assets/app-icons/novadesign.png"),
-        "novafig" => egui::include_image!("../../../assets/app-icons/novafig.png"),
         "novaword" => egui::include_image!("../../../assets/app-icons/novaword.png"),
         "novadeck" => egui::include_image!("../../../assets/app-icons/novadeck.png"),
         "novagrid" => egui::include_image!("../../../assets/app-icons/novagrid.png"),
         "novacad" => egui::include_image!("../../../assets/app-icons/novacad.png"),
         "novasound" => egui::include_image!("../../../assets/app-icons/novasound.png"),
+        "novafig" => egui::include_image!("../../../assets/app-icons/novafig.png"),
         _ => return None,
     })
 }

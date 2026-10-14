@@ -631,8 +631,8 @@ fn links_to_the_website_github_and_each_apps_pages() {
     // Cards: every app links to its repo and to its own page on workflowind.agcunae.com/apps (plus the footer's).
     let shown_cards = h.query_all_by_label("GitHub").count() - 1;
     let shown_sites = h.query_all_by_label("Website").count() - 1;
-    assert!(shown_cards >= 12, "{shown_cards}");
-    assert_eq!(shown_sites, 12, "every app has a website page");
+    assert!(shown_cards >= 13, "{shown_cards}");
+    assert_eq!(shown_sites, 13, "every app has a website page");
     // The table's … menu has the app's website and GitHub repo.
     let (mut h, _) = harness(ViewMode::Table, egui::Theme::Dark, true);
     h.run_steps(6);
@@ -1164,7 +1164,7 @@ fn the_enlarged_view_shows_a_frame_for_a_picture_still_missing() {
 fn a_page_without_pictures_has_no_gallery() {
     let (mut h, _sent) = harness(ViewMode::Grid, egui::Theme::Dark, true);
     h.run_steps(8);
-    // Nova PDF's screenshots still show its old name (PrintCraft), so its page has none for now.
+    // Nova PDF's page has no gallery until Nova Foods screenshots are available.
     h.get_by_label("Nova PDF details").click();
     h.run_steps(10);
     snapshot(&mut h, "details-no-pictures-dark");
@@ -1206,7 +1206,7 @@ fn the_lead_picture_can_be_enlarged() {
 #[test]
 fn every_page_opens_and_pages_through_its_pictures() {
     let (mut h, _sent) = harness(ViewMode::Grid, egui::Theme::Dark, true);
-    // Tall enough to show all twelve cards at once.
+    // Tall enough to show all thirteen cards at once.
     h.set_size(egui::vec2(1180.0, 3000.0));
     h.run_steps(8);
     for d in &novafoods_launcher_core::details::DETAILS {

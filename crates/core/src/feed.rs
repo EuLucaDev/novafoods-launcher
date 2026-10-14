@@ -439,7 +439,7 @@ mod tests {
     const NOW: i64 = 1_791_500_000; // 2026-10-09T…
     const HASH: &str = "8a5edab282632443219e051e4ade2d1d5bbc671c781051bf1437897cbdfea0f1";
 
-    /// What workflowind serves (its `GetCraftAppsReleaseInfoResponse`), abridged.
+    /// What workflowind serves (its `NovaFoodsReleaseInfoResponse`), abridged.
     fn sample() -> String {
         format!(
             r#"{{

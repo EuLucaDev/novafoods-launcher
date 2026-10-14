@@ -14,7 +14,7 @@
 # Left in English on purpose: product name "Nova Foods Launcher" (and its "Launcher" tag), suite
 # name "Nova Foods Apps",
 # app names (Nova Photo, Nova Light, Nova Film, Nova Design, Nova Vector, Nova PDF, Nova Effect,
-# Nova Word, Nova Deck, Nova Grid, Nova CAD, Nova Sound), "GitHub", "Suporte".
+# Nova Word, Nova Deck, Nova Grid, Nova CAD, Nova Sound, Nova Fig), "GitHub", "Suporte".
 # Shortcut keys keep their key-cap names (Shift, Alt, Ctrl, Cmd, Esc).
 # Trailing "…" (U+2026) must be preserved. Placeholders {name}, {n}, {version}, {count}, {v},
 # {what}, {unit}, {real}, {e} must appear in translation.
@@ -172,6 +172,7 @@ novadeck	Presentations and slide shows	プレゼンテーションとスライ�
 novagrid	Spreadsheets and data	表計算とデータ
 novacad	Computer-aided design and drafting	コンピューター支援設計と製図
 novasound	Recording, editing and mixing audio	オーディオの録音、編集、ミックス
+novafig	Interface design and prototyping	インターフェースデザインとプロトタイピング
 
 # Contextual: month abbreviations for date rendering
 month	Jan	1月

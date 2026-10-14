@@ -31,6 +31,7 @@ pub fn meta(app: &CraftApp) -> (&'static str, Option<&'static str>) {
         "novagrid" => ("Office;Spreadsheet;", None),
         "novacad" => ("Graphics;Engineering;VectorGraphics;", None),
         "novasound" => ("AudioVideo;Audio;Midi;Mixer;Sequencer;Recorder;", None),
+        "novafig" => ("Graphics;2DGraphics;VectorGraphics;X-Design;", Some("novafig")),
         _ => ("Graphics;", None),
     }
 }
