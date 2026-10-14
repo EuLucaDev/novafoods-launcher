@@ -137,8 +137,7 @@ mod tests {
     fn finds_aur_packages_in_every_flavour() {
         let photo = CraftApp::by_id("novaphoto").unwrap();
         let pdf = CraftApp::by_id("novapdf").unwrap();
-        let installed =
-            pkgs(InstallSource::Pacman, parse_pacman("linux 6.11.1.arch1-1\nnovaphoto-git 0.3.0.r47.g47f9306-1\nnovapdf-bin 0.2.1-1\n"));
+        let installed = pkgs(InstallSource::Pacman, parse_pacman("linux 6.11.1.arch1-1\nnovaphoto-git 0.3.0.r47.g47f9306-1\nnovapdf-bin 0.2.1-1\n"));
         let hit = find(photo, &installed, &[InstallSource::Pacman]).unwrap();
         assert_eq!(hit.name, "novaphoto-git");
         assert_eq!(version_of(hit).unwrap().to_string(), "0.3.0");
