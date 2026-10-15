@@ -16,6 +16,9 @@ macro_rules! tl {
     };
 }
 
+#[cfg(not(target_arch = "wasm32"))]
+pub use nova_account_ui as account_ui;
+
 mod app;
 #[cfg(not(target_arch = "wasm32"))]
 mod cjk_font;

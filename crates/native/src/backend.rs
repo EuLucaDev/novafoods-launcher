@@ -336,6 +336,13 @@ impl NativeBackend {
         let platform = self.platform;
         let options = self.options();
         std::thread::spawn(move || {
+            if !uninstall {
+                if let Err(error) = require_account(app.id) {
+                    shared.jobs.lock().unwrap_or_else(PoisonError::into_inner).remove(app.id);
+                    shared.emit(Event::JobFinished { app: app.id.to_string(), result: Err(error) });
+                    return;
+                }
+            }
             let existing = shared.installed.lock().unwrap_or_else(PoisonError::into_inner).get(app.id).cloned();
             let record = shared.manifest.lock().unwrap_or_else(PoisonError::into_inner).apps.get(app.id).cloned();
             let result = if uninstall {
@@ -921,13 +928,18 @@ impl Backend for NativeBackend {
             }
             Command::Launch { app } => {
                 let Some(def) = CraftApp::by_id(&app) else { return };
-                let result = match self.installed(&app) {
-                    Some(inst) => install::launch(def, &inst, &self.paths),
-                    None => Err(format!("{} isn't installed", def.name)),
-                };
-                if let Err(e) = result {
-                    self.shared.emit(Event::JobFinished { app, result: Err(e) });
-                }
+                let installed = self.installed(&app);
+                let paths = self.paths.clone();
+                let shared = self.shared.clone();
+                std::thread::spawn(move || {
+                    let result = require_account(&app).and_then(|()| match installed {
+                        Some(inst) => install::launch(def, &inst, &paths),
+                        None => Err(format!("{} não está instalado", def.name)),
+                    });
+                    if let Err(error) = result {
+                        shared.emit(Event::JobFinished { app, result: Err(error) });
+                    }
+                });
             }
             Command::Reveal { app } => {
                 if let Some(inst) = self.installed(&app) {
@@ -1415,4 +1427,14 @@ mod tests {
         });
         assert!(!restarting.load(Ordering::SeqCst));
     }
+}
+
+/// A lista do launcher é informativa; cada instalação/abertura consulta a autorização atual.
+fn require_account(app: &str) -> Result<(), String> {
+    let token = nova_live::identity::token().ok_or_else(|| "Conecte sua conta Nova Foods.".to_string())?;
+    let profile = nova_live::identity::validate_token(&token).map_err(|e| e.to_string())?;
+    if !profile.allows(app) {
+        return Err("Este aplicativo não está liberado para os seus setores.".into());
+    }
+    Ok(())
 }

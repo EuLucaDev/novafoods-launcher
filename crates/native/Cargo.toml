@@ -17,6 +17,8 @@ workspace = true
 local-mirror = []
 
 [dependencies]
+nova-live = { git = "https://github.com/EuLucaDev/nova-live", rev = "b5c44c66604d6a6ea210d724c4f1de1bc2c5431b" }
+
 novafoods-launcher-core = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }

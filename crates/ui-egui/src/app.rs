@@ -646,6 +646,10 @@ impl LauncherUi {
 
     /// Whether `entry` belongs in `filter`. Hidden apps stay out of every list except Hidden.
     pub(crate) fn in_filter(&self, entry: &AppEntry, filter: Filter) -> bool {
+        #[cfg(not(target_arch = "wasm32"))]
+        if !nova_live::identity::authorized(entry.app.id) {
+            return false;
+        }
         let hidden = self.settings.hidden.contains(entry.app.id);
         let status = entry.status(self.platform, self.caps.manage_apps);
         match filter {

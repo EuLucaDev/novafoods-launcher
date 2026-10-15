@@ -697,6 +697,9 @@ impl eframe::App for Shell<'_> {
     }
 
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
+        if !novafoods_launcher_ui_egui::account_ui::gate(ui, "novafoods-launcher") {
+            return;
+        }
         self.launcher.ui.ui(ui, &mut self.launcher.host);
     }
 

@@ -129,6 +129,8 @@ impl LauncherUi {
     }
 
     pub(crate) fn toolbar(&mut self, ui: &mut Ui) {
+        #[cfg(not(target_arch = "wasm32"))]
+        nova_account_ui::account_panel(ui, "novafoods-launcher");
         if self.settings.filter == Filter::Hidden && self.settings.hidden.is_empty() {
             self.settings.filter = Filter::All;
         }
