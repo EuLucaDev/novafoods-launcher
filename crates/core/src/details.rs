@@ -400,11 +400,7 @@ pub const DETAILS: [AppDetails; 13] = [
                 "Plain .novafig files on your own disk. SVG, PNG, JPEG, WebP and PDF in and out, and .fig files open, best effort.",
             ),
         ],
-        shots: &[
-            shot("hero", "Designing an app screen"),
-            shot("components", "Components and variants"),
-            shot("prototype", "A clickable prototype"),
-        ],
+        shots: &[shot("hero", "Designing an app screen"), shot("components", "Components and variants"), shot("prototype", "A clickable prototype")],
         platforms: PLATFORMS,
     },
 ];
