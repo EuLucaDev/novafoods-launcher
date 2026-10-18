@@ -39,6 +39,8 @@ fn main() -> ExitCode {
     logging::install_panic_hook();
     // Detect system language in the background so the first frame can use it.
     novafoods_launcher_ui_egui::i18n::detect_system_lang_in_background();
+    // Detect Suporte protocol handler in the background without blocking startup.
+    novafoods_launcher_native::process::ensure_discord_detection_started();
     let args: Vec<String> = std::env::args().skip(1).collect();
     if args.iter().any(|a| a == "--version" || a == "-V") {
         println!("novafoods-launcher {}", env!("CARGO_PKG_VERSION"));
@@ -162,12 +164,19 @@ fn native_options(hidden: bool) -> eframe::NativeOptions {
 /// Adrenalin installer leaves the integrated GPU on the OEM driver) it crashes inside
 /// `amdvlk64.dll` before the first frame. `WGPU_BACKEND` still overrides the default, and then
 /// wgpu picks the adapter itself. Direct3D 12 shaders compile with FXC ([`pin_dx12_compiler`]).
+///
+/// Direct3D 12 presents through DirectComposition rather than straight to the window. The
+/// borderless window's drop shadow moves its client area down a pixel, and a swapchain made from
+/// the window is then stretched over it vertically by the compositor, blurring every horizontal
+/// edge and line of text. `WGPU_DX12_PRESENTATION_SYSTEM` still overrides it.
 #[cfg(windows)]
 fn wgpu_options() -> eframe::WgpuConfiguration {
-    use eframe::wgpu::{Backends, Dx12Compiler, PowerPreference};
+    use eframe::wgpu::{Backends, Dx12Compiler, Dx12SwapchainKind, PowerPreference};
     let mut config = eframe::WgpuConfiguration::default();
     pin_dx12_compiler(&mut config, Dx12Compiler::from_env());
     if let eframe::egui_wgpu::WgpuSetup::CreateNew(setup) = &mut config.wgpu_setup {
+        setup.instance_descriptor.backend_options.dx12.presentation_system =
+            Dx12SwapchainKind::from_env().unwrap_or(Dx12SwapchainKind::DxgiFromVisual);
         if let Some(backends) = Backends::from_env() {
             setup.instance_descriptor.backends = backends;
         } else {
@@ -426,8 +435,20 @@ impl Host for DesktopHost {
         login::set_enabled(on)
     }
 
+    fn pick_folder(&mut self, initial: Option<&str>) -> Option<String> {
+        let mut dialog = rfd::FileDialog::new();
+        if let Some(folder) = initial.filter(|p| std::path::Path::new(p).is_dir()) {
+            dialog = dialog.set_directory(folder);
+        }
+        dialog.pick_folder().and_then(|p| p.to_str().map(str::to_string))
+    }
+
     fn reduce_motion(&self) -> bool {
         motion::reduced()
+    }
+
+    fn discord_url(&self) -> &'static str {
+        novafoods_launcher_native::process::discord_url()
     }
 
     fn quit(&mut self) {
@@ -535,7 +556,9 @@ impl Launcher {
                 tray::TrayAction::Check => self.ui.check_now(),
                 // Straight to the browser: works while the window is hidden in the tray.
                 tray::TrayAction::Open(url) => {
-                    if let Err(e) = novafoods_launcher_native::process::open(std::ffi::OsStr::new(url)) {
+                    if url == novafoods_launcher_core::catalog::DISCORD_APP_URL {
+                        novafoods_launcher_native::process::open_url_with_fallback(url, novafoods_launcher_core::catalog::DISCORD_URL);
+                    } else if let Err(e) = novafoods_launcher_native::process::open(std::ffi::OsStr::new(url)) {
                         log::warn!("couldn't open {url}: {e}");
                     }
                 }
@@ -701,6 +724,19 @@ impl eframe::App for Shell<'_> {
             return;
         }
         self.launcher.ui.ui(ui, &mut self.launcher.host);
+        ui.ctx().output_mut(|o| {
+            o.commands.retain(|cmd| {
+                // The Suporte deep link goes to the system opener, falling back to the web invite;
+                // egui's own link handling only opens web pages.
+                if let egui::OutputCommand::OpenUrl(open_url) = cmd
+                    && open_url.url == novafoods_launcher_core::catalog::DISCORD_APP_URL
+                {
+                    novafoods_launcher_native::process::open_url_with_fallback(&open_url.url, novafoods_launcher_core::catalog::DISCORD_URL);
+                    return false;
+                }
+                true
+            });
+        });
     }
 
     fn raw_input_hook(&mut self, ctx: &egui::Context, raw_input: &mut egui::RawInput) {

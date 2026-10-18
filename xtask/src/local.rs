@@ -26,12 +26,12 @@ const APPS: &[(&str, &str)] = &[
     ("novapdf", "Nova PDF"),
     ("novaeffect", "Nova Effect"),
     ("novadesign", "Nova Design"),
-    ("novaword", "Nova Word"),
-    ("novadeck", "Nova Deck"),
-    ("novagrid", "Nova Grid"),
-    ("novacad", "Nova CAD"),
-    ("novasound", "Nova Sound"),
     ("novafig", "Nova Fig"),
+    ("novaword", "Nova Word"),
+    ("novasound", "Nova Sound"),
+    ("novadeck", "Nova Deck"),
+    ("novacad", "Nova CAD"),
+    ("novagrid", "Nova Grid"),
 ];
 
 const DEFAULT_PORT: u16 = 8787;

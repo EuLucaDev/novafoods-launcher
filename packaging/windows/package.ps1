@@ -111,7 +111,7 @@ function New-InstallerArt([string] $BannerOut, [string] $DialogOut) {
   $line = [System.Drawing.Color]::FromArgb(38, 242, 241, 238)
   # The Nova Foods Apps, in the launcher's order (crates/core/src/catalog.rs).
   $apps = 'novaphoto', 'novavector', 'novafilm', 'novalight', 'novapdf', 'novaeffect',
-    'novadesign', 'novaword', 'novadeck', 'novagrid', 'novacad', 'novasound', 'novafig'
+    'novadesign', 'novafig', 'novaword', 'novasound', 'novadeck', 'novacad', 'novagrid'
   $mark = [System.Drawing.Image]::FromFile((Join-Path $Root 'assets\app-icon\hicolor\256x256\apps\br.com.novafoods.novafoods-launcher.png'))
   $wordmark = [System.Drawing.Image]::FromFile((Join-Path $Root 'docs\brand\novafoods-logo-white.png'))
   $icons = $apps | ForEach-Object { [System.Drawing.Image]::FromFile((Join-Path $Root "assets\app-icons\$_.png")) }
